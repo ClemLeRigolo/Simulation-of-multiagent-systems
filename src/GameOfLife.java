@@ -66,6 +66,15 @@ class GameOfLifeEngine extends CellGameEngine {
                 grid.getGrid()[i][j].setCurrentState(grid.getGrid()[i][j].getNbNeighbours() == 3 || (grid.getGrid()[i][j].getNbNeighbours() == 2 && grid.getGrid()[i][j].getCurrentState() == 1) ? 1 : 0);
             }
         }
+
+        //Set the previous state to the current state
+        for(int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++){
+                if(grid.getGrid()[i][j].getNbNeighbours() >= 3){
+                    grid.getGrid()[i][j].setPreviousState(grid.getGrid()[i][j].getCurrentState());
+                }
+            }
+        }
         calculateNeighbours();
     }
 

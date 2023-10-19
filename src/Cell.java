@@ -72,9 +72,15 @@ public class Cell {
 
 
     public Color getColor() {
-        //I want state 0 to be white and state nbStates - 1 to be black
+        //state 0 is white
         return new Color((int) (255 * (nbStates - 1 - currentState) / (nbStates - 1)), (int) (255 * (nbStates - 1 - currentState) / (nbStates - 1)), (int) (255 * (nbStates - 1 - currentState) / (nbStates - 1)));
 
+    }
+
+    public String toString(){
+        return "Cell [" + x + "][" + y + "]\n" +
+                "current: " + currentState +
+                "\nprevious: " + previousState;
     }
 
 }
