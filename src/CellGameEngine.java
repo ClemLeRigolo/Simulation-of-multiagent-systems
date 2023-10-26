@@ -23,17 +23,6 @@ public abstract class CellGameEngine implements Simulable {
         init();
     }
 
-    public CellGameEngine(GUISimulator gui, int gridSize, int cellNumber, int stateNumber, int cellWidth) {
-        this.gui = gui;
-        this.gridSize = gridSize;
-        this.cellNumber = cellNumber;
-        this.stateNumber = stateNumber;
-        grid = new Grid(gridSize, this.stateNumber);
-        this.cellWidth = cellWidth;
-        gui.setSimulable(this);
-        init();
-    }
-
     @Override
     public void restart(){
         grid = new Grid(this.gridSize, this.stateNumber);
