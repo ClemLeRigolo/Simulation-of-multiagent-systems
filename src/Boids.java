@@ -1,94 +1,130 @@
+import java.awt.*;
 import java.util.HashSet;
 
-import gui.GUISimulator;
-import gui.Simulable;
+public class Boids extends Cell {
+    private int x;
+    private int y;
+    private int nbStates;
+    private int previousState;
+    private int currentState;
+    private boolean isMoved;
+    private int posx;
+    private int posy;
+    private int vitessex;
+    private int vitessey;
 
-public class Boids extends CellGameEngine {
-    protected int distance;
+    private HashSet<Boids> nbNeighbours;
 
-    public Boids(GUISimulator gui, int gridSize, int boidNumber, int distance) {
-        super(gui, gridSize, boidNumber, 1);
-        this.gui = gui;
-        this.gridSize = gridSize;
-        this.cellNumber = boidNumber;
-        this.distance = distance;
-        this.cellWidth = Math.min(gui.getPanelWidth() - 60, gui.getPanelHeight() - 60) / gridSize;
-        gui.setSimulable(this);
-        init();
+    public Boids(int nbStates, int x, int y) {
+        super(nbStates, x, y);
+        setIsMoved(false);
     }
 
-    public void calculateNeighbours() {
-        // Neighbours are the boids at a distance less than 2.
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                HashSet<Cell> nbNeighbours = new HashSet<>();
-                // For each adjacent cell
-                for (int k = -this.distance; k <= this.distance; k++) {
-                    for (int l = -this.distance; l <= this.distance; l++) {
-                        // If the cell is not the current cell and is in the grid
-                        if (!(k == 0 && l == 0) && i + k >= 0 && i + k < gridSize && j + l >= 0 && j + l < gridSize) {
-                            // If the adjacent cell has a higher state or if the current state is the
-                            // highest and the adjacent cell has state 0
-                            if (grid.getGrid()[i + k][j + l]
-                                    .getPreviousState() == grid.getGrid()[i][j].getPreviousState() + 1
-                                    || (grid.getGrid()[i][j].getPreviousState() == stateNumber - 1
-                                            && grid.getGrid()[i + k][j + l].getPreviousState() == 0)) {
-                                nbNeighbours.add(grid.getGrid()[i + k][j + l]);
-                            }
-                        }
-                    }
-                }
-                grid.getGrid()[i][j].setNbNeighbours(nbNeighbours);
-            }
-        }
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public void firstGeneration(int cellNumber) {
-        // set all cells to random states
-        for (int i = 0; i < gridSize * gridSize; i++) {
-            int x = i / gridSize;
-            int y = i % gridSize;
-            int state = 1;
-            System.out.println(state);
-            grid.getGrid()[x][y].setPreviousState(state);
-            grid.getGrid()[x][y].setCurrentState(state);
-        }
-        calculateNeighbours();
+    public int getX() {
+        return this.x;
     }
 
-    public void nextGeneration() {
-        // Calculate the next state of each cell
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                if (grid.getGrid()[i][j].getCurrentState() == 1 && !grid.getGrid()[i][j].getIsMoved()) {
-                    int vitessex = grid.getGrid()[i][j].getvitx();
-                    int vitessey = grid.getGrid()[i][j].getvity();
-
-                    int forcex = i + vitessex;
-                    int forcey = j + vitessey;
-
-                    for (Cell cell : grid.getGrid()[i][j].getNbNeighbours()) {
-                        forcex += cell.getposx() + cell.getvitx();
-                        forcey += cell.getposx() + cell.getvitx();
-                    }
-
-                    vitessex += forcex;
-                    vitessey += forcey;
-
-                    int new_x = i + vitessex;
-                    int new_y = j = vitessey;
-
-                    grid.getGrid()[new_x][new_y].setvitx(vitessex);
-                    grid.getGrid()[new_x][new_y].setvity(vitessey);
-                    grid.getGrid()[new_x][new_y].setCurrentState(1);
-                    grid.getGrid()[new_x][new_y].setIsMoved(true);
-                    grid.getGrid()[i][j].setCurrentState(0);
-
-                }
-                grid.getGrid()[i][j].setisMoved(false);
-
-            }
-        }
-        calculateNeighbours();
+    public void setY(int y) {
+        this.y = y;
     }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public int getNbStates() {
+        return nbStates;
+    }
+
+    public void setNbStates(int nbStates) {
+        this.nbStates = nbStates;
+    }
+
+    public void nextState() {
+        setPreviousState(getCurrentState());
+        setCurrentState((getCurrentState() + 1) % nbStates);
+    }
+
+    public int getCurrentState() {
+        return currentState;
+    }
+
+    public int getPreviousState() {
+        return previousState;
+    }
+
+    public void setCurrentState(int state) {
+        this.currentState = state;
+    }
+
+    public void setPreviousState(int state) {
+        this.previousState = state;
+    }
+
+    public HashSet<Boids> getNeighbours() {
+        return nbNeighbours;
+    }
+
+    public void setNbNeighbours(HashSet<Boids> nbNeighbours) {
+        this.nbNeighbours = nbNeighbours;
+    }
+
+    public Color getColor() {
+        // state 0 is white
+        return new Color((int) (255 * (nbStates - 1 - currentState) / (nbStates - 1)),
+                (int) (255 * (nbStates - 1 - currentState) / (nbStates - 1)),
+                (int) (255 * (nbStates - 1 - currentState) / (nbStates - 1)));
+
+    }
+
+    public void setIsMoved(boolean bool) {
+        this.isMoved = false;
+    }
+
+    public boolean getIsMoved() {
+        return this.isMoved;
+    }
+
+    public int getvitx() {
+        return this.vitessex;
+    }
+
+    public void setvitx(int vitesse) {
+        this.vitessex = vitesse;
+    }
+
+    public int getvity() {
+        return this.vitessey;
+    }
+
+    public void setvity(int vitesse) {
+        this.vitessey = vitesse;
+    }
+
+    public int getposx() {
+        return this.posx;
+    }
+
+    public void setposx(int position) {
+        this.posx = position;
+    }
+
+    public int getposy() {
+        return this.posy;
+    }
+
+    public void setposy(int position) {
+        this.posy = position;
+    }
+
+    public String toString() {
+        return "Boid [" + x + "][" + y + "]\n" +
+                "current: " + currentState +
+                "\nprevious: " + previousState;
+    }
+
 }
