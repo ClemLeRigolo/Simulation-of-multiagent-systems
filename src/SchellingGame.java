@@ -7,7 +7,7 @@ public class SchellingGame {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        SchellingGameEngine game = new SchellingGameEngine(gui, 30, 600, 2, 4);
+        SchellingGameEngine game = new SchellingGameEngine(gui, 30, 500, 2, 4);
     }
 }
 
@@ -27,7 +27,8 @@ class SchellingGameEngine extends CellGameEngine {
         this.colors = new Color[colorNumber];
 
         // Generate random and different colors
-        for (int i = 0; i < colorNumber; i++) {
+        colors[0] = Color.WHITE;
+        for (int i = 1; i < colorNumber; i++) {
             colors[i] = new Color((int) (Math.random() * 0x1000000));
             for (int j = 0; j < i; j++) {
                 if (colors[i] == colors[j]) {
@@ -56,25 +57,21 @@ class SchellingGameEngine extends CellGameEngine {
         for (int i = 0; i < grid.getSize(); i++) {
             for (int j = 0; j < grid.getSize(); j++) {
                 // If the cell is in emptyCell
-                if (emptyCells.contains(grid.getCell(i, j))) {
-                    gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth + 60,
-                            Color.LIGHT_GRAY, Color.WHITE, this.cellWidth));
-                } else {
-                    // System.out.println("color of cell " + i + " " + j + " is " +
-                    // colors[grid.getCell(i,j).getCurrentState()]+" and state is " +
-                    // grid.getCell(i,j).getCurrentState());
-                    gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth + 60,
-                            colors[grid.getCell(i, j).getCurrentState()], colors[grid.getCell(i, j).getCurrentState()],
-                            this.cellWidth));
-                }
+                // System.out.println("color of cell " + i + " " + j + " is " +
+                // colors[grid.getCell(i,j).getCurrentState()]+" and state is " +
+                // grid.getCell(i,j).getCurrentState());
+                gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth + 60,
+                        Color.LIGHT_GRAY, colors[grid.getCell(i, j).getCurrentState()],
+                        this.cellWidth));
             }
         }
+
     }
 
     @Override
     public void restart() {
         grid = new Grid(this.gridSize, this.stateNumber);
-        for (int i = 0; i < colorNumber; i++) {
+        for (int i = 1; i < colorNumber; i++) {
             colors[i] = new Color((int) (Math.random() * 0x1000000));
             for (int j = 0; j < i; j++) {
                 if (colors[i] == colors[j]) {
@@ -121,11 +118,14 @@ class SchellingGameEngine extends CellGameEngine {
         for (int i = 0; i < cellNumber; i++) {
             int x = (int) (Math.random() * gridSize);
             int y = (int) (Math.random() * gridSize);
-            int state = (int) (Math.random() * colorNumber);
+            int state = (int) (Math.random() * (colorNumber - 1)) + 1;
             grid.getGrid()[x][y].setPreviousState(state);
-            grid.getGrid()[x][y].setCurrentState(grid.getGrid()[x][y].getPreviousState());
-            coloredCells.add(grid.getGrid()[x][y]);
-            emptyCells.remove(grid.getGrid()[x][y]);
+            grid.getGrid()[x][y].setCurrentState(state);
+            if (state != 0) {
+                coloredCells.add(grid.getGrid()[x][y]);
+                emptyCells.remove(grid.getGrid()[x][y]);
+            }
+
         }
         calculateNeighbours();
     }
@@ -136,31 +136,43 @@ class SchellingGameEngine extends CellGameEngine {
         // becomes an empty cell and moves to a random empty cell
         // Empty cells are those with state 0
 
+        System.out.println("Début Next");
+
         HashSet<Cell> movingCells = new HashSet<>();
 
-        for (Cell cell : coloredCells) {
-            if (cell.getNbNeighbours() >= threshold) {
+        HashSet<Cell> copycolored = new HashSet<>(coloredCells);
+
+        for (Cell cell : copycolored) {
+            if (cell.getNbNeighbours() >= threshold && cell.getCurrentState() != 0) {
+                System.out.println(threshold);
+                System.out.println(cell.getNbNeighbours());
+                System.out.println(cell.getCurrentState());
+                System.out.println("");
                 movingCells.add(cell);
             }
         }
 
-        for (Cell cell : movingCells) {
+        HashSet<Cell> copymoved = new HashSet<>(movingCells);
+
+        for (Cell cell : copymoved) {
             // Move the cell to a random empty cell
             int x = (int) (Math.random() * gridSize);
             int y = (int) (Math.random() * gridSize);
-            while (grid.getGrid()[x][y].getCurrentState() != 0) {
+            while (!(emptyCells.contains(grid.getCell(x, y)))) {
                 x = (int) (Math.random() * gridSize);
                 y = (int) (Math.random() * gridSize);
             }
+
             // grid.getGrid()[x][y].setPreviousState(cell.getPreviousState());
             grid.getGrid()[x][y].setCurrentState(cell.getCurrentState());
             cell.setCurrentState(0);
             coloredCells.remove(cell);
-            emptyCells.remove(grid.getGrid()[x][y]);
             coloredCells.add(grid.getGrid()[x][y]);
+            emptyCells.remove(grid.getGrid()[x][y]);
             emptyCells.add(cell);
+            movingCells.remove(cell);
         }
-        calculateNeighbours();
 
+        calculateNeighbours();
     }
 }
