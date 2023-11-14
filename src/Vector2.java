@@ -7,6 +7,17 @@ public class PVector {
         this.y = y;
     }
 
+    public PVector() {
+        this.x = 0;
+        this.y = 0;
+    }
+
+    public static PVector random2D() {
+        float x = (float) (Math.random() * 2 - 1);
+        float y = (float) (Math.random() * 2 - 1);
+        return new PVector(x, y);
+    }
+
     public float getX() {
         return x;
     }
