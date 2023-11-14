@@ -1,21 +1,20 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import gui.GraphicalElement;
 
 
-public class Fish extends Boid {
+public class Sardine extends Boid {
     private Color bodyColor;
     private Color finColor;
 
-    public Fish(int x, int y, int size, double rotationAngle, Color bodyColor, Color finColor) {
+    public Sardine(int x, int y, int size, double rotationAngle, Color bodyColor, Color finColor) {
         super();
         super.size = size;
         this.rotationAngle = rotationAngle;
         this.bodyColor = bodyColor;
         this.finColor = finColor;
-        maxspeed = 4;
-        maxforce = 0.1f;
+        maxSpeed = 4;
+        maxForce = 0.1f;
     }
 
     @Override

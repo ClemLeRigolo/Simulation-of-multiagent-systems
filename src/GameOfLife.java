@@ -14,6 +14,7 @@ class GameOfLifeEngine extends CellGameEngine {
 
     public GameOfLifeEngine(GUISimulator gui, int gridSize, int cellNumber) {
         super(gui, gridSize, cellNumber, 2);
+        super.init();
     }
 
     @Override
@@ -21,7 +22,7 @@ class GameOfLifeEngine extends CellGameEngine {
         gui.reset();	// clear the window
         for (int i = 0; i < grid.getSize(); i++) {
             for (int j = 0; j < grid.getSize(); j++) {
-                if(grid.getCell(i, j).getCurrentState() == 1){
+                if(grid.getCase(i, j).getCurrentState() == 1){
                     gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth+60, Color.BLUE, Color.BLUE, this.cellWidth));
                 }else{
                     gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth+60, Color.LIGHT_GRAY, Color.WHITE, this.cellWidth));
@@ -51,10 +52,11 @@ class GameOfLifeEngine extends CellGameEngine {
     public void firstGeneration(int cellNumber){
         // set random cells to true
         for(int i = 0; i < cellNumber; i++) {
+
             int x = (int) (Math.random() * gridSize);
             int y = (int) (Math.random() * gridSize);
-            grid.getGrid()[x][y].setPreviousState(1);
-            grid.getGrid()[x][y].setCurrentState(1);
+            grid.getCase(x,y).setPreviousState(1);
+            grid.getCase(x,y).setCurrentState(1);
         }
         calculateNeighbours();
     }

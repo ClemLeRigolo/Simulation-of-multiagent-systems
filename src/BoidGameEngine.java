@@ -1,10 +1,8 @@
 import gui.GUISimulator;
-import gui.Rectangle;
-import gui.Simulable;
 
 public abstract class BoidGameEngine extends GameEngine {
 
-    protected int boidNumber;
+    protected int fishNumber;
 
     public BoidGameEngine(GUISimulator gui, int boidNumber) {
         super(gui, boidNumber);

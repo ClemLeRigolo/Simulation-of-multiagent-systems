@@ -9,6 +9,7 @@ public abstract class GameEngine implements Simulable{
 
     public GameEngine(GUISimulator gui, int entityNumber){
         this.gui = gui;
+        this.entityNumber = entityNumber;
         gui.setSimulable(this);
     }
 

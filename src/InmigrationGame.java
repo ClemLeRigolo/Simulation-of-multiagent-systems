@@ -14,6 +14,7 @@ class InmigrationGameEngine extends CellGameEngine {
 
     public InmigrationGameEngine(GUISimulator gui, int gridSize, int cellNumber) {
         super(gui, gridSize, cellNumber, 4);
+        super.init();
     }
 
     public void calculateNeighbours(){

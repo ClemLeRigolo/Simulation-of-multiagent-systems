@@ -1,58 +1,72 @@
 import gui.GUISimulator;
 
-import gui.GraphicalElement;
-import gui.Rectangle;
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class FishBoids {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
-        GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        FishBoidsEngine game = new FishBoidsEngine(gui, 1);
+        GUISimulator gui = new GUISimulator(800, 600, Color.CYAN);
+        FishBoidsEngine game = new FishBoidsEngine(gui, 100);
     }
 }
 
 
 class FishBoidsEngine extends BoidGameEngine{
 
-    Fish fish;
-    public FishBoidsEngine(GUISimulator gui, int boidNumber){
-        super(gui, boidNumber);
+    Sardines sardines;
+    int fishNumber;
+    FlowField flowField;
+    Vector2 target = new Vector2(500, 500);
+    public FishBoidsEngine(GUISimulator gui, int fishNumber){
+        super(gui, fishNumber);
     }
 
     @Override
-    protected void firstGeneration(int entityNumber) {
-        //Draw a fish using rectangles using Fish class
-        fish = new Fish(100, 100, 30, Math.PI/4, Color.BLUE, Color.BLUE);
-        fish.location = new PVector(100, 100);
-        gui.addGraphicalElement(fish);
+    protected void firstGeneration(int fishNumber) {
+
+        this.fishNumber = fishNumber;
+
+        sardines = new Sardines(fishNumber);
 
 
+        Consumer<Boid> drawFish = (Boid b) -> {
+            gui.addGraphicalElement(b);
+            b.location = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
+        };
+
+        sardines.applyToAllBoids(drawFish);
+
+        flowField = new FlowField(10, 800, 600);
+        flowField.initField(FlowEnum.CENTER);
+        //drawField();
     }
 
     //Make a fish rotate a given angle
-    public void rotateFish(Fish fish, double angle){
-        fish.rotate(angle);
-    }
 
     @Override
     protected void draw() {
+        Consumer<Boid> updateFish = (Boid b) -> {
 
+            sardines.separate(b, b.size * 2);
+            b.follow(flowField);
+            b.update();
+        };
+        sardines.applyToAllBoids(updateFish);
     }
 
     @Override
     public void restart() {
-
+        flowField.initField(FlowEnum.RANDOM);
+        Consumer<Boid> restart = (Boid b) -> {
+            b.location = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
+        };
+        sardines.applyToAllBoids(restart);
     }
 
     @Override
     public void next() {
-        fish.update();
-
-        fish.seek(new PVector(250,250));
-        System.out.println(fish.location.getX() + " " + fish.location.getY());
-        //fish.moveTo(500,500);
-        //fish.translate(10, 10);
-        //fish.rotate(Math.PI/12);
+        draw();
     }
+
 }

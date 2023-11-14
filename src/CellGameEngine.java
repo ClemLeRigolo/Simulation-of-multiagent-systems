@@ -1,9 +1,8 @@
 import gui.GUISimulator;
 import gui.Rectangle;
-import gui.Simulable;
 
 public abstract class CellGameEngine extends GameEngine {
-    protected Grid grid;
+    protected Grid<Cell> grid;
     protected int cellWidth;
     protected int gridSize;
     protected int cellNumber;
@@ -14,19 +13,18 @@ public abstract class CellGameEngine extends GameEngine {
         super(gui, cellNumber);
         this.gui = gui;
         this.gridSize = gridSize;
-        this.cellNumber = super.entityNumber;
+        super.entityNumber = cellNumber;
         this.stateNumber = stateNumber;
-        grid = new Grid(gridSize, this.stateNumber);
+        grid = new Grid<>(gridSize, this.stateNumber);
         //cellwidth is the minimum of the width and height of the window divided by the size of the grid
         this.cellWidth = Math.min(gui.getPanelWidth() - 60, gui.getPanelHeight() - 60) / gridSize;
         gui.setSimulable(this);
-        init();
     }
 
     @Override
     public void restart(){
-        grid = new Grid(this.gridSize, this.stateNumber);
-        firstGeneration(this.cellNumber);
+        grid = new Grid<>(this.gridSize, this.stateNumber);
+        firstGeneration(super.entityNumber);
         draw();
     }
 
@@ -42,7 +40,7 @@ public abstract class CellGameEngine extends GameEngine {
         gui.reset();	// clear the window
         for (int i = 0; i < grid.getSize(); i++) {
             for (int j = 0; j < grid.getSize(); j++) {
-                gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth+60, grid.getCell(i,j).getColor(), grid.getCell(i,j).getColor(), this.cellWidth));
+                gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth+60, grid.getCase(i,j).getColor(), grid.getCase(i,j).getColor(), this.cellWidth));
             }
         }
     }

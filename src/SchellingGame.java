@@ -61,7 +61,7 @@ class SchellingGameEngine extends CellGameEngine {
                 // colors[grid.getCell(i,j).getCurrentState()]+" and state is " +
                 // grid.getCell(i,j).getCurrentState());
                 gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth + 60,
-                        Color.LIGHT_GRAY, colors[grid.getCell(i, j).getCurrentState()],
+                        Color.LIGHT_GRAY, colors[grid.getCase(i, j).getCurrentState()],
                         this.cellWidth));
             }
         }
@@ -70,7 +70,7 @@ class SchellingGameEngine extends CellGameEngine {
 
     @Override
     public void restart() {
-        grid = new Grid(this.gridSize, this.stateNumber);
+        grid = new Grid<>(this.gridSize, this.stateNumber);
         for (int i = 1; i < colorNumber; i++) {
             colors[i] = new Color((int) (Math.random() * 0x1000000));
             for (int j = 0; j < i; j++) {
@@ -114,7 +114,6 @@ class SchellingGameEngine extends CellGameEngine {
 
     public void firstGeneration(int cellNumber) {
         // set random cells to random states
-        System.out.println(cellNumber);
         for (int i = 0; i < cellNumber; i++) {
             int x = (int) (Math.random() * gridSize);
             int y = (int) (Math.random() * gridSize);
@@ -142,10 +141,6 @@ class SchellingGameEngine extends CellGameEngine {
 
         for (Cell cell : copycolored) {
             if (cell.getNbNeighbours() >= threshold && cell.getCurrentState() != 0) {
-                System.out.println(threshold);
-                System.out.println(cell.getNbNeighbours());
-                System.out.println(cell.getCurrentState());
-                System.out.println("");
                 movingCells.add(cell);
             }
         }
@@ -156,7 +151,7 @@ class SchellingGameEngine extends CellGameEngine {
             // Move the cell to a random empty cell
             int x = (int) (Math.random() * gridSize);
             int y = (int) (Math.random() * gridSize);
-            while (!(emptyCells.contains(grid.getCell(x, y)))) {
+            while (!(emptyCells.contains(grid.getCase(x, y)))) {
                 x = (int) (Math.random() * gridSize);
                 y = (int) (Math.random() * gridSize);
             }
