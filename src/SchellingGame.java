@@ -7,7 +7,7 @@ public class SchellingGame {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        SchellingGameEngine game = new SchellingGameEngine(gui, 30, 500, 2, 4);
+        SchellingGameEngine game = new SchellingGameEngine(gui, 100, 5000, 2, 4);
     }
 }
 
@@ -24,7 +24,7 @@ class SchellingGameEngine extends CellGameEngine {
         super(gui, gridSize, cellNumber, colorNumber);
         this.threshold = threshold;
         this.colorNumber = colorNumber;
-        this.colors = new Color[colorNumber];
+        this.colors = new Color[colorNumber+1];
 
         // Generate random and different colors
         colors[0] = Color.WHITE;
@@ -135,8 +135,6 @@ class SchellingGameEngine extends CellGameEngine {
         // If a cell has more than threshold neighbours with a different state, it
         // becomes an empty cell and moves to a random empty cell
         // Empty cells are those with state 0
-
-        System.out.println("Début Next");
 
         HashSet<Cell> movingCells = new HashSet<>();
 

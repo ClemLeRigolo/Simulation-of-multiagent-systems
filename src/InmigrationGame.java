@@ -13,7 +13,7 @@ public class InmigrationGame {
 class InmigrationGameEngine extends CellGameEngine {
 
     public InmigrationGameEngine(GUISimulator gui, int gridSize, int cellNumber) {
-        super(gui, gridSize, cellNumber, 3);
+        super(gui, gridSize, cellNumber, 4);
     }
 
     public void calculateNeighbours(){
