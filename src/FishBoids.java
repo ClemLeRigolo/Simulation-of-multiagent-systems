@@ -38,7 +38,7 @@ class FishBoidsEngine extends BoidGameEngine{
         sardines.applyToAllBoids(drawFish);
 
         flowField = new FlowField(10, 800, 600);
-        flowField.initField(FlowEnum.CENTER);
+        flowField.initField(FlowEnum.RANDOM);
         //drawField();
     }
 
@@ -51,6 +51,7 @@ class FishBoidsEngine extends BoidGameEngine{
             sardines.separate(b, b.size * 2);
             b.follow(flowField);
             b.update();
+            System.out.println(b.location.getX() + " " + b.location.getY());
         };
         sardines.applyToAllBoids(updateFish);
     }

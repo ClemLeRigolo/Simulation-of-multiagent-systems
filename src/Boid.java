@@ -20,7 +20,7 @@ public abstract class Boid implements GraphicalElement {
         acceleration = new Vector2(0, 0);
         velocity = new Vector2(0, 0);
         location = new Vector2(0, 0);
-        target = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
+        //target = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
     }
 
     void update() {
@@ -28,17 +28,17 @@ public abstract class Boid implements GraphicalElement {
         velocity.limit(maxSpeed);
         location.add(velocity);
         acceleration.mult(0);
-        if(location.getX() > 799){
-            location.setX(0);
+        if(location.getX() > 800F){
+            location.setX(0F);
         }
-        if(location.getX() < 0){
-            location.setX(799);
+        if(location.getX() < 0F){
+            location.setX(800F);
         }
-        if(location.getY() > 599){
-            location.setY(0);
+        if(location.getY() > 600F){
+            location.setY(0F);
         }
-        if(location.getY() < 0){
-            location.setY(599);
+        if(location.getY() < 0F){
+            location.setY(600F);
         }
     }
 
@@ -60,7 +60,7 @@ public abstract class Boid implements GraphicalElement {
         double d = desired.mag();
         desired.normalize();
         if (d < 100) {
-            double m = d / 100 * maxSpeed;
+            float m = (float) (d / 100 * maxSpeed);
             desired.mult((float) m);
         } else {
             desired.mult(maxSpeed);
@@ -76,18 +76,6 @@ public abstract class Boid implements GraphicalElement {
         Vector2 steer = Vector2.sub(desired, velocity);
         steer.limit(maxForce);
         applyForce(steer);
-    }
-
-    public void rotate(double angle) {
-        rotationAngle += angle;
-    }
-
-    public void translate(int dx, int dy) {
-        location.add(new Vector2(dx, dy));
-    }
-
-    public void moveTo(int targetX, int targetY) {
-        seek(new Vector2(targetX, targetY));
     }
 
     public double getHeadingAngle() {
