@@ -13,7 +13,7 @@ public class Sardine extends Boid {
         this.rotationAngle = rotationAngle;
         this.bodyColor = bodyColor;
         this.finColor = finColor;
-        maxSpeed = 4;
+        maxSpeed = 4f;
         maxForce = 0.1f;
     }
 

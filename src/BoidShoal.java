@@ -39,4 +39,24 @@ public abstract class BoidShoal {
         }
     }
 
+    public void align(Boid boid, double neighborDist) {
+        Vector2 sum = new Vector2();
+        int count = 0;
+        for (Boid other : boids) {
+            double d = Vector2.dist(boid.location, other.location);
+            if ((d > 0) && (d < neighborDist)) {
+                sum.add(other.velocity);
+                count++;
+            }
+        }
+        if (count > 0) {
+            sum.div(count);
+            sum.normalize();
+            sum.mult(boid.maxSpeed);
+            Vector2 steer = Vector2.sub(sum, boid.velocity);
+            steer.limit(boid.maxForce);
+            boid.applyForce(steer);
+        }
+    }
+
 }

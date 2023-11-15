@@ -38,7 +38,7 @@ class FishBoidsEngine extends BoidGameEngine{
         sardines.applyToAllBoids(drawFish);
 
         flowField = new FlowField(10, 800, 600);
-        flowField.initField(FlowEnum.RANDOM);
+        flowField.initField(FlowEnum.CENTER);
         //drawField();
     }
 
@@ -48,7 +48,8 @@ class FishBoidsEngine extends BoidGameEngine{
     protected void draw() {
         Consumer<Boid> updateFish = (Boid b) -> {
 
-            //sardines.separate(b, b.size);
+            sardines.align(b, b.size);
+            sardines.separate(b, b.size/2);
             b.follow(flowField);
             b.update();
             if(b.location.getX() == Float.NaN){
