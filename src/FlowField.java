@@ -51,15 +51,22 @@ public class FlowField {
     }
 
 
-
+    double constrain(double value, double min, double max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        } else {
+            return value;
+        }
+    }
 
     Vector2 lookup(Vector2 lookup) {
-        int column = (int) (lookup.getX() / field.getResolution());
-        int row = (int) (lookup.getY() / field.getResolution());
-        if(column < 0 || column >= field.getCols() || row < 0 || row >= field.getRows()){
-            return new Vector2(0, 0);
-        }
+        System.out.println(lookup.getX() + " " + lookup.getY());
+        int column = (int) constrain(lookup.getX() / field.getResolution(), 0, field.getCols() - 1);
+        int row = (int) constrain(lookup.getY() / field.getResolution(), 0, field.getRows() - 1);
 
+        //System.out.println(column + " " + row);
         return field.getCase(column, row);
     }
 

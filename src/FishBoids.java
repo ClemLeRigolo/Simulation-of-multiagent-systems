@@ -48,10 +48,12 @@ class FishBoidsEngine extends BoidGameEngine{
     protected void draw() {
         Consumer<Boid> updateFish = (Boid b) -> {
 
-            sardines.separate(b, b.size * 2);
+            //sardines.separate(b, b.size);
             b.follow(flowField);
             b.update();
-            System.out.println(b.location.getX() + " " + b.location.getY());
+            if(b.location.getX() == Float.NaN){
+                System.out.println(b.location.getX() + " " + b.location.getY());
+            }
         };
         sardines.applyToAllBoids(updateFish);
     }
