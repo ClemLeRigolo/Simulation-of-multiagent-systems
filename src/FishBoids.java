@@ -7,7 +7,7 @@ public class FishBoids {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.CYAN);
-        FishBoidsEngine game = new FishBoidsEngine(gui, 100);
+        FishBoidsEngine game = new FishBoidsEngine(gui, 200);
     }
 }
 
@@ -38,7 +38,7 @@ class FishBoidsEngine extends BoidGameEngine{
         sardines.applyToAllBoids(drawFish);
 
         flowField = new FlowField(10, 800, 600);
-        flowField.initField(FlowEnum.CENTER);
+        flowField.initField(FlowEnum.RANDOM);
         //drawField();
     }
 
@@ -48,6 +48,7 @@ class FishBoidsEngine extends BoidGameEngine{
     protected void draw() {
         Consumer<Boid> updateFish = (Boid b) -> {
 
+            sardines.cohesion(b, b.size*2);
             sardines.align(b, b.size);
             sardines.separate(b, b.size/2);
             b.follow(flowField);

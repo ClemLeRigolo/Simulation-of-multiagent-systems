@@ -59,4 +59,20 @@ public abstract class BoidShoal {
         }
     }
 
+    public void cohesion(Boid boid, double neighborDist) {
+        Vector2 sum = new Vector2();
+        int count = 0;
+        for (Boid other : boids) {
+            double d = Vector2.dist(boid.location, other.location);
+            if ((d > 0) && (d < neighborDist)) {
+                sum.add(other.location);
+                count++;
+            }
+        }
+        if (count > 0) {
+            sum.div(count);
+            boid.seek(sum);
+        }
+    }
+
 }
