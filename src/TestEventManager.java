@@ -1,3 +1,9 @@
+/**
+ * Je manage bien !
+ *Code de test de EventManager à l'aide de l'événement message.
+ * Message sort un message à la date voulue.
+ */
+
 public class TestEventManager {
     public static void main ( String [] args ) throws InterruptedException {
          // On crée un simulateur

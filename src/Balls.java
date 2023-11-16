@@ -1,4 +1,9 @@
 import java.awt.geom.Point2D;
+
+/**
+ * Qui veut bien jouer à la balle avec moi ?
+ * Instancie des balles avec les différentes actions qu'une balle en mouvement devrait effectuer.
+ */
 public class Balls {
     private Point2D[] balls = new Point2D[3];
 

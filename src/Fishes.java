@@ -1,6 +1,11 @@
 import java.awt.*;
 
-public class Fishes extends BoidShoal{
+/**
+ * Des Sardines !
+ * Permets d'instancier les boids en forme de poissons pour le modèle de boids développé.
+ * Définie la couleur de chaque boids poissons.
+ */
+    public class Fishes extends BoidShoal{
     /*public Fishes(int nbSardines) {
         super(nbSardines);
         for (int i = 0; i < nbSardines; i++) {
@@ -12,9 +17,9 @@ public class Fishes extends BoidShoal{
         }
     }*/
 
-    public void addFishes(Boid[] boids) {
-        for (Boid boid : boids) {
-            this.boids.add(boid);
+        public void addFishes(Boid[] boids) {
+            for (Boid boid : boids) {
+                this.boids.add(boid);
+            }
         }
     }
-}

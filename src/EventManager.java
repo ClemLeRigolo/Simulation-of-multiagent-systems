@@ -1,5 +1,9 @@
 import java.util.HashSet; // import the HashMap class
 
+/**
+ * Un Manager ...
+ * Sert à créer une liste de différents événements et de les lancer quand nous arrivons à leur date d'éxécution.
+ */
 public class EventManager {
     private long currentDate;
     //Peut-être plutôt utiliser une queue de priorité pour avoir un accès en O(1) à l'événement le plus proche

@@ -1,5 +1,14 @@
 import java.util.Random;
 
+/**
+ * Un champ Vectoriel.
+ *
+ * Génére les champs vectoriels pour les déplacements des Boids sur la fenêtre graphique.
+ * Possède trois valeur possible:
+ *  -Center qui attire les boids vers le milieu de l'écran
+ *  -Perlin qui génére un champ avec du bruit
+ *  -Random qui génère un champ aléatoire
+ */
 public class FlowField {
     protected Grid<Vector2> field;
 

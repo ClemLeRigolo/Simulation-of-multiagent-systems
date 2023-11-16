@@ -3,6 +3,9 @@ import gui.GUISimulator;
 import java.awt.*;
 import java.util.function.Consumer;
 
+/**
+ * Simule un banc de poissons à l'aide de Boids.
+ */
 public class FishBoids {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
@@ -11,7 +14,15 @@ public class FishBoids {
     }
 }
 
-
+/**
+ * BAnc de poisson
+ * cet objet est associé à une fenêtre graphique GUISimulator, dans laquelle
+ * il peut se dessiner.
+ * De plus il hérite de Simulable, donc il définit deux méthodes next() et
+ * restart() invoquées par la fenêtre graphique de simulation selon les
+ * commandes entrées par l'utilisateur.
+ * Utilise la simulation des Boids et les poissons Boids pour simuler le comportement d'un banc de poissons.
+ */
 class FishBoidsEngine extends BoidGameEngine{
 
     private EventManager eventManager;

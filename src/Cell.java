@@ -1,4 +1,9 @@
 import java.awt.*;
+
+/**
+ * Cellule
+ * Définit ce qu'est une cellule et de quelle info elle nécessite pour sa manipulation dans les différentes simulations du projet
+ */
 public class Cell {
     private int x;
     private int y;

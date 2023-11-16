@@ -1,5 +1,9 @@
 import java.lang.reflect.Array;
 
+/**
+ * Découcage de la fenêtre graphique en différentes cases pouvant toutes acceuillir des identité propres (comme des cellules ou des Boids)
+ * @param <T>: type des éléments qui occuperont les différentes cases de la fênetre graphique.
+ */
 public class Grid<T> {
     private T[][] grid;
     private int size;

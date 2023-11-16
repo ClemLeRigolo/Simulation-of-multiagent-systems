@@ -2,6 +2,9 @@ import gui.GUISimulator;
 import gui.Rectangle;
 import java.awt.*;
 
+/**
+ * Teste le jeu de l'immigration
+ */
 public class InmigrationGame {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
@@ -10,6 +13,15 @@ public class InmigrationGame {
     }
 }
 
+/**
+ * Jeu de l'immigration
+ * cet objet est associé à une fenêtre graphique GUISimulator, dans laquelle
+ * il peut se dessiner.
+ * De plus il hérite de Simulable, donc il définit deux méthodes next() et
+ * restart() invoquées par la fenêtre graphique de simulation selon les
+ * commandes entrées par l'utilisateur.
+ * Ce jeu est une version à plus de 2 états du jeu de la vie. Chaque changement d'états fait passer à l'état k+1 (au lieu de 1 à 0 et 0 à 1 dans le jeu de la vie).
+ */
 class InmigrationGameEngine extends CellGameEngine {
 
     public InmigrationGameEngine(GUISimulator gui, int gridSize, int cellNumber) {

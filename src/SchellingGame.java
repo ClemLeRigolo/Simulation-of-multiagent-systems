@@ -3,14 +3,27 @@ import gui.Rectangle;
 import java.awt.*;
 import java.util.HashSet;
 
+/**
+ * Je teste le SchellingGame
+ */
+
 public class SchellingGame {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        SchellingGameEngine game = new SchellingGameEngine(gui, 100, 5000, 2, 4);
+        SchellingGameEngine game = new SchellingGameEngine(gui, 100, 5000, 3, 4);
     }
 }
 
+/**
+ * SchellingGame
+ * cet objet est associé à une fenêtre graphique GUISimulator, dans laquelle
+ * il peut se dessiner.
+ * De plus il hérite de Simulable, donc il définit deux méthodes next() et
+ * restart() invoquées par la fenêtre graphique de simulation selon les
+ * commandes entrées par l'utilisateur.
+ * Il permet de montrer l'ampleur de l'effet de la ségrégation au sein d'un groupe d'individu.
+ */
 class SchellingGameEngine extends CellGameEngine {
     private int threshold;
     private int colorNumber;
@@ -28,7 +41,7 @@ class SchellingGameEngine extends CellGameEngine {
 
         // Generate random and different colors
         colors[0] = Color.WHITE;
-        for (int i = 1; i < colorNumber; i++) {
+        for (int i = 1; i <= colorNumber; i++) {
             colors[i] = new Color((int) (Math.random() * 0x1000000));
             for (int j = 0; j < i; j++) {
                 if (colors[i] == colors[j]) {
@@ -41,8 +54,9 @@ class SchellingGameEngine extends CellGameEngine {
                 emptyCells.add(grid.getGrid()[i][j]);
             }
         }
-        firstGeneration(cellNumber);
-        draw();
+
+        next();
+        next();
     }
 
     @Override
@@ -69,7 +83,8 @@ class SchellingGameEngine extends CellGameEngine {
     }
 
     @Override
-    public void restart() {
+    public void restartFunc() {
+        System.out.println("zdhio");
         grid = new Grid<>(this.gridSize, this.stateNumber);
         for (int i = 1; i < colorNumber; i++) {
             colors[i] = new Color((int) (Math.random() * 0x1000000));
@@ -79,13 +94,25 @@ class SchellingGameEngine extends CellGameEngine {
                 }
             }
         }
+
+
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                emptyCells.add(grid.getGrid()[i][j]);
+
+                grid.getCase(i,j).setCurrentState(0);
+                grid.getCase(i,j).setPreviousState(0);
+
+                if (!(emptyCells.contains(grid.getCase(i, j)))) {
+                    emptyCells.add(grid.getGrid()[i][j]);
+                }
+
+                if (coloredCells.contains(grid.getCase(i, j))) {
+                    coloredCells.remove(grid.getGrid()[i][j]);
+                }
+
             }
         }
-        firstGeneration(this.cellNumber);
-        draw();
+
     }
 
     public void calculateNeighbours() {
@@ -107,8 +134,8 @@ class SchellingGameEngine extends CellGameEngine {
                 }
             }
             cell.setNbNeighbours(nbNeighbours);
-            // System.out.println("Cell at " + cell.getX() + " " + cell.getY() + " has " +
-            // nbNeighbours + " neighbours");
+            System.out.println("Cell at " + cell.getX() + " " + cell.getY() + " has " +
+            nbNeighbours + " neighbours");
         }
     }
 
@@ -117,13 +144,11 @@ class SchellingGameEngine extends CellGameEngine {
         for (int i = 0; i < cellNumber; i++) {
             int x = (int) (Math.random() * gridSize);
             int y = (int) (Math.random() * gridSize);
-            int state = (int) (Math.random() * (colorNumber - 1)) + 1;
+            int state = (int) (Math.random() * (colorNumber)) + 1;
             grid.getGrid()[x][y].setPreviousState(state);
             grid.getGrid()[x][y].setCurrentState(state);
-            if (state != 0) {
-                coloredCells.add(grid.getGrid()[x][y]);
-                emptyCells.remove(grid.getGrid()[x][y]);
-            }
+            coloredCells.add(grid.getGrid()[x][y]);
+            emptyCells.remove(grid.getGrid()[x][y]);
 
         }
         calculateNeighbours();
@@ -167,5 +192,6 @@ class SchellingGameEngine extends CellGameEngine {
         }
 
         calculateNeighbours();
+
     }
 }

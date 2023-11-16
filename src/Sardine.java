@@ -2,7 +2,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-
+/**
+ * Une sardine !
+ * Permet d'instancier un boid en forme de poisson et qui agit comme tel
+ */
 public class Sardine extends Boid {
     private Color bodyColor;
     private Color finColor;

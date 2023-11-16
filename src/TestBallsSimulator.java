@@ -10,6 +10,14 @@ public class TestBallsSimulator {
     }
 
 }
+/**
+ * Des balles qui rebondissent...
+ * cet objet est associé à une fenêtre graphique GUISimulator, dans laquelle
+ * il peut se dessiner.
+ * De plus il hérite de Simulable, donc il définit deux méthodes next() et
+ * restart() invoquées par la fenêtre graphique de simulation selon les
+ * commandes entrées par l'utilisateur.
+ */
 
 class BallsSimulator implements Simulable{
     private GUISimulator gui;

@@ -1,6 +1,17 @@
 import gui.GUISimulator;
 import gui.Rectangle;
 
+import java.awt.desktop.SystemEventListener;
+
+/**
+ * Base commune à toute les simulations à base de cellules
+ * cet objet est associé à une fenêtre graphique GUISimulator, dans laquelle
+ * il peut se dessiner.
+ * De plus il hérite de Simulable, donc il définit deux méthodes next() et
+ * restart() invoquées par la fenêtre graphique de simulation selon les
+ * commandes entrées par l'utilisateur.
+ * Il sert de base commune.
+ */
 public abstract class CellGameEngine extends GameEngine {
     protected Grid<Cell> grid;
     protected int cellWidth;
@@ -22,23 +33,30 @@ public abstract class CellGameEngine extends GameEngine {
         this.cellWidth = Math.min(gui.getPanelWidth() - 60, gui.getPanelHeight() - 60) / gridSize;
         gui.setSimulable(this);
         eventManager.addEvent(new FirstGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
+        eventManager.addEvent(new DrawEvent((int) (eventManager.getCurrentDate()+2)));
 
+    }
+
+    public void restartFunc() {
+        grid = new Grid<>(this.gridSize, this.stateNumber);
     }
 
     @Override
     public void restart(){
-        grid = new Grid<>(this.gridSize, this.stateNumber);
+        restartFunc();
+        System.out.println("vkkkkkd");
         eventManager.restart();
-        eventManager.addEvent(new FirstGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
 
-        draw();
+        eventManager.addEvent(new FirstGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
+        eventManager.addEvent(new DrawEvent((int) (eventManager.getCurrentDate()+1)));
+        eventManager.next();
+
     }
 
     @Override
     public void next(){
         //nextGeneration();
         eventManager.next();
-        draw();
     }
 
     protected abstract void nextGeneration();
@@ -75,7 +93,15 @@ public abstract class CellGameEngine extends GameEngine {
 
         public void execute() {
             firstGeneration(cellNumber);
-            eventManager.addEvent(new NextGenerationEvent((int) (eventManager.getCurrentDate()+1)));
+            eventManager.addEvent(new NextGenerationEvent((int) (eventManager.getCurrentDate()+2)));
+        }
+    }
+
+    class DrawEvent extends Event {
+         public DrawEvent(long date) { super(date); }
+        public void execute() {
+            draw();
+            eventManager.addEvent(new DrawEvent((int) (eventManager.getCurrentDate()+1)));
         }
     }
 

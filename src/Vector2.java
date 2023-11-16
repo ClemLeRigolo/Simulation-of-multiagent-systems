@@ -1,3 +1,9 @@
+/**
+ * Class Vector2
+ * Possède un attributr x et un y réprésentant la place dans l'espace 2D de GUI.
+ * Cette classe permet d'effectuer tous les calculs en 2 dimensions, notamment toutes les opérations arithmétiques.
+ */
+
 public class Vector2 {
     private float x;
     private float y;

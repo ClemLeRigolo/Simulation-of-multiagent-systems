@@ -1,6 +1,11 @@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Attention requin !
+ *
+ * Instancie des Boids représentant de méchants poissons (les requins) qui chassent les autres (système proie/prédateur)
+ */
 public class Shark extends Boid {
     private Color bodyColor;
     private Color finColor;

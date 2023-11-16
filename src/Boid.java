@@ -2,7 +2,10 @@ import java.awt.Graphics2D;
 
 import gui.GraphicalElement;
 
-
+/**
+ * Implement le  principe générale d'un boid et  comment il doit bouger (classe parente).
+ * Un boid bouge en fonction de sa vitesse actuelle et de ses différents voisins dans son champ de vision.
+ */
 public abstract class Boid implements GraphicalElement {
 
     protected float maxForce;

@@ -1,3 +1,7 @@
+/**
+ * Un événement ?
+ * Classe abstraite définissant les méthodes que tout événement devrait avoir: une date et quelque chose à effectuer.
+ */
 public abstract class Event {
     private long date;
 

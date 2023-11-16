@@ -1,5 +1,8 @@
 import java.util.Random;
 
+/**
+ * Générateur des bruits pour le champ vectoriel (en prototype)
+ */
 public class PerlinNoiseGenerator {
     private int[] permutations;
 

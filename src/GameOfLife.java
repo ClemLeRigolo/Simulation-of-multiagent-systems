@@ -2,6 +2,9 @@ import gui.GUISimulator;
 import gui.Rectangle;
 import java.awt.*;
 
+/**
+ * Lance le jeu de la vie
+ */
 public class GameOfLife {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
@@ -10,6 +13,18 @@ public class GameOfLife {
     }
 }
 
+/**
+ * La vie c'est comme un jeu, en prenant le temps de level up suffisament c'est facile!
+ *
+ *  Jeu de la vie:
+ *  cet objet est associé à une fenêtre graphique GUISimulator, dans laquelle
+ *  il peut se dessiner.
+ *  De plus il hérite de Simulable, donc il définit deux méthodes next() et
+ *  restart() invoquées par la fenêtre graphique de simulation selon les
+ *  commandes entrées par l'utilisateur.
+ *  Dans ce jeu, chaque case est cellule morte ou vivante et change d'état en fonction de ses voisins au cours des itérations.
+ *
+ */
 class GameOfLifeEngine extends CellGameEngine {
 
     private EventManager eventManager = new EventManager();
