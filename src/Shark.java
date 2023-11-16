@@ -87,11 +87,11 @@ public class Shark extends Boid {
         yPoints = new int[]{size /5, size / 2, size / 5};
         g2.fillPolygon(xPoints, yPoints, 3); // Nageoire dorsale
 
-// Dents
+        // Dents
         g2.setColor(Color.WHITE);
         drawTeeth(g2, size);
 
-// Œil
+        // Œil
         g2.setColor(finColor);
         g2.fillOval(-size / 3, size/8, size / 6, size / 6);
 
@@ -116,10 +116,20 @@ public class Shark extends Boid {
         int numTeeth = 3;
 
         for (int i = 0; i < numTeeth; i++) {
+            int[] xPoints = {
+                    i*(toothWidth) + toothGap - size / 2,
+                    i*(toothWidth) + toothGap - size / 2 + toothWidth/2,
+                    i*(toothWidth) + toothGap - size / 2 + toothWidth
+            };
+            int[] yPoints = {
+                    -size / 8 + toothHeight,
+                    -size / 8,
+                    -size / 8 + toothHeight
+            };
             int toothX = i * (toothWidth + toothGap) - size / 2;
             int toothY = -size / 8;
-
-            g2.fillRect(toothX, toothY, toothWidth, toothHeight);
+            Polygon tooth = new Polygon(xPoints, yPoints, 3);
+            g2.fill(tooth);
         }
     }
 
