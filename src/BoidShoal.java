@@ -80,12 +80,12 @@ public abstract class BoidShoal {
         }
     }
 
-    public Vector2 closestBoidLocation(Boid fromBoid){
+    public Boid closestBoidFrom(Boid boid){
         //The boid in parameter will follow the closest boid from the shoal
         Boid closest = null;
         double closestDist = 0;
         for(Boid other : boids){
-            double d = Vector2.dist(fromBoid.location, other.location);
+            double d = Vector2.dist(boid.location, other.location);
             if(d > 0){
                 if(closest == null){
                     closest = other;
@@ -96,11 +96,19 @@ public abstract class BoidShoal {
                 }
             }
         }
-        return closest.location;
+        return closest;
     }
 
     public ArrayList<Boid> getBoids(){
         return boids;
+    }
+
+    public void removeBoid(Boid boid){
+        boids.remove(boid);
+    }
+
+    public int getNbBoids(){
+        return boids.size();
     }
 
 }

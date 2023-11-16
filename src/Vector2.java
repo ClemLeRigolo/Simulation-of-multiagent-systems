@@ -18,6 +18,13 @@ public class Vector2 {
         return new Vector2(x, y);
     }
 
+    public static Vector2 lerp(Vector2 a, Vector2 b, float t) {
+        return new Vector2(
+                a.x + (b.x - a.x) * t,
+                a.y + (b.y - a.y) * t
+        );
+    }
+
     public float getX() {
         return x;
     }
@@ -59,6 +66,12 @@ public class Vector2 {
             x /= scalar;
             y /= scalar;
         }
+    }
+
+    public static Vector2 modulo(Vector2 vector, Vector2 other) {
+        float x = vector.x % other.x;
+        float y = vector.y % other.y;
+        return new Vector2(x, y);
     }
 
     public static double dist(Vector2 vector1, Vector2 vector2) {

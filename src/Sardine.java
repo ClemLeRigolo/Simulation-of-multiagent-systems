@@ -7,7 +7,7 @@ public class Sardine extends Boid {
     private Color bodyColor;
     private Color finColor;
 
-    private BoidShoal slayers;
+    private BoidShoal predators;
 
     public Sardine(int x, int y, int size, double rotationAngle, Color bodyColor, Color finColor) {
         super();
@@ -30,9 +30,10 @@ public class Sardine extends Boid {
     @Override
     public void update() {
         //avoid the slayers if they are too close
-        if (slayers != null) {
-            Vector2 target = slayers.closestBoidLocation(this);
-            if (Vector2.dist(location, target) < size * 6) {
+        if (predators != null) {
+            Boid predator = predators.closestBoidFrom(this);
+            Vector2 target = predator.location;
+            if (Vector2.dist(location, target) < size * 10) {
                 Vector2 avoid = Vector2.sub(location, target);
                 avoid.normalize();
                 avoid.mult(maxSpeed);
@@ -40,8 +41,8 @@ public class Sardine extends Boid {
                 steer.limit(maxForce);
                 applyForce(steer);
             }
-            super.update();
         }
+        super.update();
     }
 
     public void randomColor(){
@@ -51,6 +52,11 @@ public class Sardine extends Boid {
             Color darkerColor = new Color(color.getRed() / 2, color.getGreen() / 2, color.getBlue() / 2);
             this.bodyColor = color;
             this.finColor = darkerColor;
+    }
+
+    public void setOpacity(float opacity) {
+        bodyColor = new Color(bodyColor.getRed(), bodyColor.getGreen(), bodyColor.getBlue(), (int) (opacity * 255));
+        finColor = new Color(finColor.getRed(), finColor.getGreen(), finColor.getBlue(), (int) (opacity * 255));
     }
 
     @Override
@@ -78,7 +84,7 @@ public class Sardine extends Boid {
         return bodyColor.toString() + " fish";
     }
 
-    public void setSlayers(BoidShoal slayers) {
-        this.slayers = slayers;
+    public void setPredators(BoidShoal predators) {
+        this.predators = predators;
     }
 }

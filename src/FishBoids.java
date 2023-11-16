@@ -1,27 +1,28 @@
 import gui.GUISimulator;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class FishBoids {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.CYAN);
-        FishBoidsEngine game = new FishBoidsEngine(gui, 200);
+        FishBoidsEngine game = new FishBoidsEngine(gui, 1);
     }
 }
 
 
 class FishBoidsEngine extends BoidGameEngine{
 
-    Fishes niceFishes;
-    Fishes badFishes;
-    Sardine[] sardines;
-    Shark shark;
-    int fishNumber;
-    FlowField flowField;
-    Vector2 target = new Vector2(500, 500);
+    private EventManager eventManager;
+
+    private Fishes niceFishes;
+    private Fishes badFishes;
+    private Sardine[] sardines;
+    private Shark shark;
+    private int fishNumber;
+    private FlowField flowField;
+
     public FishBoidsEngine(GUISimulator gui, int fishNumber){
         super(gui, fishNumber);
     }
@@ -30,6 +31,7 @@ class FishBoidsEngine extends BoidGameEngine{
     protected void firstGeneration(int fishNumber) {
 
         this.fishNumber = fishNumber;
+        this.eventManager = new EventManager();
 
         niceFishes = new Fishes();
         badFishes = new Fishes();
@@ -41,15 +43,15 @@ class FishBoidsEngine extends BoidGameEngine{
             sardines[i] = new Sardine((int) ((Math.random() * 10) + 20));
         }
 
-        shark.setPreys(niceFishes);
+
         badFishes.addBoids(new Shark[]{shark});
-        //set slayers for each sardine
+        //set predator for each sardine
         for (Sardine sardine : sardines) {
-            sardine.setSlayers(badFishes);
+            sardine.setPredators(badFishes);
         }
 
         niceFishes.addBoids(sardines);
-        niceFishes.addBoids(new Shark[]{shark});
+        shark.setPreys(niceFishes);
 
 
         Consumer<Boid> drawFish = (Boid b) -> {
@@ -58,24 +60,33 @@ class FishBoidsEngine extends BoidGameEngine{
         };
 
         niceFishes.applyToAllBoids(drawFish);
+        badFishes.applyToAllBoids(drawFish);
 
         flowField = new FlowField(10, 800, 600);
         flowField.initField(FlowEnum.RANDOM);
+        eventManager.addEvent(new ChangeFieldEvent(100));
+
+        //Lambda function in parameter of the event
+        eventManager.addEvent(new UpdateFishesEvent(1, 1, niceFishes, (Boid b) -> {
+            niceFishes.cohesion(b, b.size*2.5);
+            niceFishes.align(b, b.size);
+            niceFishes.separate(b, b.size*1.5);
+            b.follow(flowField);
+            b.update();
+        }));
+
+        eventManager.addEvent(new UpdateFishesEvent(1, 2, badFishes, (Boid b) -> {
+            b.follow(flowField);
+            b.update();
+        }));
+
     }
 
     //Make a fish rotate a given angle
 
     @Override
     protected void draw() {
-        Consumer<Boid> updateFish = (Boid b) -> {
 
-            niceFishes.cohesion(b, b.size*2.5);
-            niceFishes.align(b, b.size);
-            niceFishes.separate(b, b.size*1.5);
-            b.follow(flowField);
-            b.update();
-        };
-        niceFishes.applyToAllBoids(updateFish);
     }
 
     @Override
@@ -90,15 +101,51 @@ class FishBoidsEngine extends BoidGameEngine{
     @Override
     public void next() {
         //10% chance to update field
-        if(Math.random() < 0.001){
-            //1% to switch between random and center
+        eventManager.next();
+        draw();
+    }
+
+    /**
+     * @Events
+     */
+
+    class ChangeFieldEvent extends Event {
+
+        public ChangeFieldEvent(int date) {
+            super(date);
+        }
+
+        @Override
+        public void execute() {
             if(flowField.getFlowEnum() == FlowEnum.RANDOM) {
                 flowField.initField(FlowEnum.CENTER);
             }else {
                 flowField.initField(FlowEnum.RANDOM);
             }
+            //random between 1000 and 100000
+            int randomTime = (int) (Math.random() * 1000) + 100;
+            eventManager.addEvent(new ChangeFieldEvent((int) (eventManager.getCurrentDate() + randomTime)));
         }
-        draw();
+
+    }
+
+    class UpdateFishesEvent extends Event {
+        int timeStep;
+        BoidShoal shoal;
+        Consumer<Boid> updateFish;
+        public UpdateFishesEvent(int date, int timeStep, BoidShoal shoal, Consumer<Boid> updateFish) {
+            super(date);
+            this.shoal = shoal;
+            this.timeStep = timeStep;
+            this.updateFish = updateFish;
+        }
+
+        @Override
+        public void execute() {
+            this.shoal.applyToAllBoids(updateFish);
+            eventManager.addEvent(new UpdateFishesEvent((int) (eventManager.getCurrentDate() + timeStep), timeStep, shoal, updateFish));
+        }
+
     }
 
 }

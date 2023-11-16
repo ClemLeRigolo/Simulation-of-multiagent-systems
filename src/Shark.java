@@ -7,31 +7,57 @@ public class Shark extends Boid {
 
     private BoidShoal preys;
 
-    public Shark(int x, int y, int size, double rotationAngle, Color bodyColor, Color finColor) {
-        super();
-        super.size = size;
-        this.rotationAngle = rotationAngle;
-        this.bodyColor = bodyColor;
-        this.finColor = finColor;
-        maxSpeed = 2f;
-        maxForce = 0.05f;
-    }
+    private float hunger = 0;
+
+    Boid targetedPrey;
 
     public Shark(int size) {
         super();
         super.size = size;
-        maxSpeed = 2f;
+        maxSpeed = 0f;
         maxForce = 0.05f;
         randomColor();
     }
 
     @Override
     public void update() {
-        if (preys != null) {
-            Vector2 target = preys.closestBoidLocation(this);
-            seek(target);
+        if (preys.getNbBoids() != 0) {
+            if(hunger < 1){
+                hunger += 0.01;
+            }
+            this.maxSpeed = 10f * hunger;
+            this.maxForce = (float) (0.05 / hunger);
+            this.targetedPrey = preys.closestBoidFrom(this);
+            this.seek(targetedPrey.location);
         }
         super.update();
+        checkCollision();
+    }
+
+    public void checkCollision(){
+        if(targetedPrey != null){
+            if(Vector2.dist(location, targetedPrey.location) < size/2){
+                eat();
+            }
+        }
+    }
+
+    public void eat(){
+        if(targetedPrey != null){
+            preys.removeBoid(targetedPrey);
+            hunger = 0;
+        }
+    }
+
+    @Override
+    public void seek(Vector2 target) {
+        Vector2 desired = Vector2.sub(target, location);
+        desired.normalize();
+        desired.mult(maxSpeed);
+        //Smoother movement
+        Vector2 steer = Vector2.lerp(desired, velocity, (float) 0.5);
+        steer.limit(maxForce);
+        applyForce(steer);
     }
 
     public void randomColor() {
@@ -103,5 +129,13 @@ public class Shark extends Boid {
 
     public void setPreys(BoidShoal preys) {
         this.preys = preys;
+    }
+
+    public void setHunger(float hunger) {
+        this.hunger = hunger;
+    }
+
+    public float getHunger() {
+        return hunger;
     }
 }

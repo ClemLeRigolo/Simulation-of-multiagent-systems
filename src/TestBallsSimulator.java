@@ -46,8 +46,6 @@ class BallsSimulator implements Simulable{
 
     class MoveBallsEvent extends Event {
 
-
-
         public MoveBallsEvent(int date) {
             super(date);
         }
