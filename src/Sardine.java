@@ -64,7 +64,7 @@ public class Sardine extends Boid {
 
     @Override
     public void paint(Graphics2D g2) {
-        System.out.println("sardiiiiiine");
+        System.out.println("size : " + size);
         AffineTransform oldTransform = g2.getTransform();
 
         g2.translate(location.getX(), location.getY());

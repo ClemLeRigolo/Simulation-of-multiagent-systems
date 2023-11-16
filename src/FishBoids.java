@@ -62,7 +62,9 @@ class FishBoidsEngine extends BoidGameEngine{
         }
 
         niceFishes.addBoids(sardines);
-        shark.setPreys(niceFishes);
+        Fishes preyFishes = new Fishes();
+        preyFishes.addBoids(sardines);
+        shark.setPreys(preyFishes);
 
 
         Consumer<Boid> drawFish = (Boid b) -> {
@@ -104,7 +106,11 @@ class FishBoidsEngine extends BoidGameEngine{
     @Override
     public void restart() {
         flowField.initField(FlowEnum.RANDOM);
+        Fishes preyFishes = new Fishes();
+        preyFishes.addBoids(sardines);
+        shark.setPreys(preyFishes);
         Consumer<Boid> restart = (Boid b) -> {
+            b.size = (int) ((Math.random() * 10) + 20);
             b.location = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
         };
         niceFishes.applyToAllBoids(restart);
