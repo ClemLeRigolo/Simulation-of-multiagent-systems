@@ -2,6 +2,7 @@ import java.util.HashSet; // import the HashMap class
 
 public class EventManager {
     private long currentDate;
+    //Peut-être plutôt utiliser une queue de priorité pour avoir un accès en O(1) à l'événement le plus proche
     HashSet<Event> listEvent = new HashSet<>();
 
     public EventManager() {
@@ -25,7 +26,8 @@ public class EventManager {
     }
 
     public void restart() {
-        this.currentDate = 0;
+        this.setCurrentDate(0);
+        this.listEvent.clear();
     }
 
     public void setCurrentDate(long date) {

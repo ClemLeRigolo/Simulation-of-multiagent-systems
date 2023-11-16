@@ -9,28 +9,35 @@ public abstract class CellGameEngine extends GameEngine {
 
     protected int stateNumber;
 
+    private EventManager eventManager = new EventManager();
+
     public CellGameEngine(GUISimulator gui, int gridSize, int cellNumber, int stateNumber) {
         super(gui, cellNumber);
         this.gui = gui;
         this.gridSize = gridSize;
-        super.entityNumber = cellNumber;
+        this.cellNumber = cellNumber;
         this.stateNumber = stateNumber;
         grid = new Grid<>(gridSize, this.stateNumber);
         //cellwidth is the minimum of the width and height of the window divided by the size of the grid
         this.cellWidth = Math.min(gui.getPanelWidth() - 60, gui.getPanelHeight() - 60) / gridSize;
         gui.setSimulable(this);
+        eventManager.addEvent(new FirstGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
+
     }
 
     @Override
     public void restart(){
         grid = new Grid<>(this.gridSize, this.stateNumber);
-        firstGeneration(super.entityNumber);
+        eventManager.restart();
+        eventManager.addEvent(new FirstGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
+
         draw();
     }
 
     @Override
     public void next(){
-        nextGeneration();
+        //nextGeneration();
+        eventManager.next();
         draw();
     }
 
@@ -46,5 +53,32 @@ public abstract class CellGameEngine extends GameEngine {
     }
 
     protected abstract void calculateNeighbours();
+
+     class NextGenerationEvent extends Event {
+
+        public NextGenerationEvent(int date) {
+            super(date);
+        }
+
+        @Override
+        public void execute() {
+            nextGeneration();
+            draw();
+            eventManager.addEvent(new NextGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
+        }
+    }
+
+    class FirstGenerationEvent extends Event {
+        public FirstGenerationEvent(long date) {
+            super(date);
+        }
+
+        public void execute() {
+            firstGeneration(cellNumber);
+            eventManager.addEvent(new NextGenerationEvent((int) (eventManager.getCurrentDate()+1)));
+        }
+    }
+
+
 
 }

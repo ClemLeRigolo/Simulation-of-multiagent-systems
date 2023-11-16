@@ -50,12 +50,9 @@ class FishBoidsEngine extends BoidGameEngine{
 
             sardines.cohesion(b, b.size*2);
             sardines.align(b, b.size);
-            sardines.separate(b, b.size/2);
+            sardines.separate(b, b.size);
             b.follow(flowField);
             b.update();
-            if(b.location.getX() == Float.NaN){
-                System.out.println(b.location.getX() + " " + b.location.getY());
-            }
         };
         sardines.applyToAllBoids(updateFish);
     }
@@ -71,6 +68,15 @@ class FishBoidsEngine extends BoidGameEngine{
 
     @Override
     public void next() {
+        //10% chance to update field
+        if(Math.random() < 0.10){
+            //1% to change into Center
+            if(Math.random() < 0.01){
+                flowField.initField(FlowEnum.CENTER);
+            } else {
+                flowField.initField(FlowEnum.RANDOM);
+            }
+        }
         draw();
     }
 

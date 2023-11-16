@@ -62,7 +62,6 @@ public class FlowField {
     }
 
     Vector2 lookup(Vector2 lookup) {
-        System.out.println(lookup.getX() + " " + lookup.getY());
         int column = (int) constrain(lookup.getX() / field.getResolution(), 0, field.getCols() - 1);
         int row = (int) constrain(lookup.getY() / field.getResolution(), 0, field.getRows() - 1);
 

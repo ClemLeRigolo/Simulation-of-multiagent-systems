@@ -6,15 +6,17 @@ public class GameOfLife {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        GameOfLifeEngine game = new GameOfLifeEngine(gui, 30, 100);
+        CellGameEngine game = new GameOfLifeEngine(gui, 30, 100);
     }
 }
 
 class GameOfLifeEngine extends CellGameEngine {
 
-    public GameOfLifeEngine(GUISimulator gui, int gridSize, int cellNumber) {
+    private EventManager eventManager = new EventManager();
+
+    public GameOfLifeEngine(GUISimulator gui,  int gridSize, int cellNumber) {
         super(gui, gridSize, cellNumber, 2);
-        super.init();
+        draw();
     }
 
     @Override
@@ -79,5 +81,4 @@ class GameOfLifeEngine extends CellGameEngine {
         }
         calculateNeighbours();
     }
-
 }

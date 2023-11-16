@@ -47,7 +47,6 @@ class InmigrationGameEngine extends CellGameEngine {
             int x = i / gridSize;
             int y = i % gridSize;
             int state = (int) (Math.random() * stateNumber);
-            System.out.println(state);
             grid.getGrid()[x][y].setPreviousState(state);
             grid.getGrid()[x][y].setCurrentState(state);
         }

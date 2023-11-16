@@ -15,23 +15,26 @@ class BallsSimulator implements Simulable{
     private GUISimulator gui;
     private Balls balls = new Balls();
 
+    private EventManager eventManager = new EventManager();
+
     public BallsSimulator(GUISimulator gui) {
         this.gui = gui;
         gui.setSimulable(this);				// association a la gui!
+        eventManager.addEvent(new ResetBallsEvent(1));
+        draw();
     }
 
 
     @Override
     public void next() {
-        balls.translate(10, 10);
-        draw();
-        System.out.println(balls.toString());
+        eventManager.next();
     }
 
     @Override
     public void restart() {
-        balls.reInit();
-        draw();
+        eventManager.restart();
+        eventManager.addEvent(new ResetBallsEvent(1));
+        eventManager.next();
     }
 
     private void draw(){
@@ -41,4 +44,40 @@ class BallsSimulator implements Simulable{
         }
     }
 
+    class MoveBallsEvent extends Event {
+
+
+
+        public MoveBallsEvent(int date) {
+            super(date);
+        }
+
+        @Override
+        public void execute() {
+            balls.translate(10, 10);
+            draw();
+            eventManager.addEvent(new MoveBallsEvent((int) (eventManager.getCurrentDate() + 1)));
+        }
+
+    }
+
+    class ResetBallsEvent extends Event {
+
+
+        public ResetBallsEvent(int date) {
+            super(date);
+        }
+
+        @Override
+        public void execute() {
+            balls.reInit();
+            eventManager.addEvent(new MoveBallsEvent((int) (eventManager.getCurrentDate() + 1)));
+            draw();
+        }
+
+    }
+
 }
+
+
+
