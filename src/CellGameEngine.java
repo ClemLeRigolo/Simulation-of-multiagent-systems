@@ -48,7 +48,8 @@ public abstract class CellGameEngine extends GameEngine {
         eventManager.restart();
 
         eventManager.addEvent(new FirstGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
-        eventManager.addEvent(new DrawEvent((int) (eventManager.getCurrentDate()+1)));
+        eventManager.addEvent(new DrawEvent((int) (eventManager.getCurrentDate()+2)));
+        eventManager.next();
         eventManager.next();
 
     }
@@ -81,7 +82,6 @@ public abstract class CellGameEngine extends GameEngine {
         @Override
         public void execute() {
             nextGeneration();
-            draw();
             eventManager.addEvent(new NextGenerationEvent((int) (eventManager.getCurrentDate() + 1)));
         }
     }
