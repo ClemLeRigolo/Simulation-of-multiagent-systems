@@ -5,10 +5,15 @@ public abstract class BoidShoal {
 
     protected ArrayList<Boid> boids;
 
-    public BoidShoal(int nbBoids) {
+    public BoidShoal() {
         boids = new ArrayList<Boid>();
     }
 
+    public void addBoids(Boid[] boids) {
+        for (Boid boid : boids) {
+            this.boids.add(boid);
+        }
+    }
     public void applyToAllBoids(Consumer<Boid> function) {
         for (Boid boid : boids) {
             // Appel de la fonction sur chaque boid
@@ -73,6 +78,29 @@ public abstract class BoidShoal {
             sum.div(count);
             boid.seek(sum);
         }
+    }
+
+    public Vector2 closestBoidLocation(Boid fromBoid){
+        //The boid in parameter will follow the closest boid from the shoal
+        Boid closest = null;
+        double closestDist = 0;
+        for(Boid other : boids){
+            double d = Vector2.dist(fromBoid.location, other.location);
+            if(d > 0){
+                if(closest == null){
+                    closest = other;
+                    closestDist = d;
+                } else if(d < closestDist){
+                    closest = other;
+                    closestDist = d;
+                }
+            }
+        }
+        return closest.location;
+    }
+
+    public ArrayList<Boid> getBoids(){
+        return boids;
     }
 
 }

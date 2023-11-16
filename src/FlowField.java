@@ -3,6 +3,7 @@ import java.util.Random;
 public class FlowField {
     protected Grid<Vector2> field;
 
+    FlowEnum flowEnum;
     //I want an enum of strings
 
     public FlowField(int resolution, int width, int height) {
@@ -10,6 +11,7 @@ public class FlowField {
     }
 
     void initField(FlowEnum flowEnum) {
+        this.flowEnum = flowEnum;
         if(flowEnum == FlowEnum.RANDOM){
             for(int i = 0; i < field.getCols(); i++){
                 for(int j = 0; j < field.getRows(); j++){
@@ -73,6 +75,9 @@ public class FlowField {
         return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
     }
 
+    public FlowEnum getFlowEnum() {
+        return flowEnum;
+    }
 }
 
 

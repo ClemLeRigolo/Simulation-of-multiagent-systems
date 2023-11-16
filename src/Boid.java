@@ -20,7 +20,12 @@ public abstract class Boid implements GraphicalElement {
         acceleration = new Vector2(0, 0);
         velocity = new Vector2(0, 0);
         location = new Vector2(0, 0);
+        randomPos();
         //target = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
+    }
+
+    public void randomPos(){
+        location = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
     }
 
     void update() {

@@ -1,6 +1,7 @@
 import gui.GUISimulator;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class FishBoids {
@@ -14,7 +15,10 @@ public class FishBoids {
 
 class FishBoidsEngine extends BoidGameEngine{
 
-    Sardines sardines;
+    Fishes niceFishes;
+    Fishes badFishes;
+    Sardine[] sardines;
+    Shark shark;
     int fishNumber;
     FlowField flowField;
     Vector2 target = new Vector2(500, 500);
@@ -27,7 +31,25 @@ class FishBoidsEngine extends BoidGameEngine{
 
         this.fishNumber = fishNumber;
 
-        sardines = new Sardines(fishNumber);
+        niceFishes = new Fishes();
+        badFishes = new Fishes();
+        sardines = new Sardine[fishNumber];
+        shark = new Shark(75);
+        //Init sardines
+        for (int i = 0; i < fishNumber; i++) {
+            //random size
+            sardines[i] = new Sardine((int) ((Math.random() * 10) + 20));
+        }
+
+        shark.setPreys(niceFishes);
+        badFishes.addBoids(new Shark[]{shark});
+        //set slayers for each sardine
+        for (Sardine sardine : sardines) {
+            sardine.setSlayers(badFishes);
+        }
+
+        niceFishes.addBoids(sardines);
+        niceFishes.addBoids(new Shark[]{shark});
 
 
         Consumer<Boid> drawFish = (Boid b) -> {
@@ -35,11 +57,10 @@ class FishBoidsEngine extends BoidGameEngine{
             b.location = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
         };
 
-        sardines.applyToAllBoids(drawFish);
+        niceFishes.applyToAllBoids(drawFish);
 
         flowField = new FlowField(10, 800, 600);
         flowField.initField(FlowEnum.RANDOM);
-        //drawField();
     }
 
     //Make a fish rotate a given angle
@@ -48,13 +69,13 @@ class FishBoidsEngine extends BoidGameEngine{
     protected void draw() {
         Consumer<Boid> updateFish = (Boid b) -> {
 
-            sardines.cohesion(b, b.size*2);
-            sardines.align(b, b.size);
-            sardines.separate(b, b.size);
+            niceFishes.cohesion(b, b.size*2.5);
+            niceFishes.align(b, b.size);
+            niceFishes.separate(b, b.size*1.5);
             b.follow(flowField);
             b.update();
         };
-        sardines.applyToAllBoids(updateFish);
+        niceFishes.applyToAllBoids(updateFish);
     }
 
     @Override
@@ -63,17 +84,17 @@ class FishBoidsEngine extends BoidGameEngine{
         Consumer<Boid> restart = (Boid b) -> {
             b.location = new Vector2((float) (Math.random() * 800), (float) (Math.random() * 600));
         };
-        sardines.applyToAllBoids(restart);
+        niceFishes.applyToAllBoids(restart);
     }
 
     @Override
     public void next() {
         //10% chance to update field
-        if(Math.random() < 0.10){
-            //1% to change into Center
-            if(Math.random() < 0.01){
+        if(Math.random() < 0.001){
+            //1% to switch between random and center
+            if(flowField.getFlowEnum() == FlowEnum.RANDOM) {
                 flowField.initField(FlowEnum.CENTER);
-            } else {
+            }else {
                 flowField.initField(FlowEnum.RANDOM);
             }
         }

@@ -7,6 +7,8 @@ public class Sardine extends Boid {
     private Color bodyColor;
     private Color finColor;
 
+    private BoidShoal slayers;
+
     public Sardine(int x, int y, int size, double rotationAngle, Color bodyColor, Color finColor) {
         super();
         super.size = size;
@@ -15,6 +17,40 @@ public class Sardine extends Boid {
         this.finColor = finColor;
         maxSpeed = 4f;
         maxForce = 0.1f;
+    }
+
+    public Sardine(int size) {
+        super();
+        super.size = size;
+        maxSpeed = 4f;
+        maxForce = 0.1f;
+        randomColor();
+    }
+
+    @Override
+    public void update() {
+        //avoid the slayers if they are too close
+        if (slayers != null) {
+            Vector2 target = slayers.closestBoidLocation(this);
+            if (Vector2.dist(location, target) < size * 6) {
+                Vector2 avoid = Vector2.sub(location, target);
+                avoid.normalize();
+                avoid.mult(maxSpeed);
+                Vector2 steer = Vector2.sub(avoid, velocity);
+                steer.limit(maxForce);
+                applyForce(steer);
+            }
+            super.update();
+        }
+    }
+
+    public void randomColor(){
+            //random color
+            Color color = new Color((int) (Math.random() * 0x1000000));
+            //same color darker
+            Color darkerColor = new Color(color.getRed() / 2, color.getGreen() / 2, color.getBlue() / 2);
+            this.bodyColor = color;
+            this.finColor = darkerColor;
     }
 
     @Override
@@ -40,5 +76,9 @@ public class Sardine extends Boid {
 
     public String toString() {
         return bodyColor.toString() + " fish";
+    }
+
+    public void setSlayers(BoidShoal slayers) {
+        this.slayers = slayers;
     }
 }
