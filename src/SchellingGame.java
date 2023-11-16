@@ -70,10 +70,6 @@ class SchellingGameEngine extends CellGameEngine {
         gui.reset();
         for (int i = 0; i < grid.getSize(); i++) {
             for (int j = 0; j < grid.getSize(); j++) {
-                // If the cell is in emptyCell
-                // System.out.println("color of cell " + i + " " + j + " is " +
-                // colors[grid.getCell(i,j).getCurrentState()]+" and state is " +
-                // grid.getCell(i,j).getCurrentState());
                 gui.addGraphicalElement(new Rectangle(i * this.cellWidth + 60, j * this.cellWidth + 60,
                         Color.LIGHT_GRAY, colors[grid.getCase(i, j).getCurrentState()],
                         this.cellWidth));
@@ -84,7 +80,6 @@ class SchellingGameEngine extends CellGameEngine {
 
     @Override
     public void restartFunc() {
-        System.out.println("zdhio");
         grid = new Grid<>(this.gridSize, this.stateNumber);
         for (int i = 1; i < colorNumber; i++) {
             colors[i] = new Color((int) (Math.random() * 0x1000000));
@@ -134,8 +129,6 @@ class SchellingGameEngine extends CellGameEngine {
                 }
             }
             cell.setNbNeighbours(nbNeighbours);
-            System.out.println("Cell at " + cell.getX() + " " + cell.getY() + " has " +
-            nbNeighbours + " neighbours");
         }
     }
 
@@ -181,7 +174,6 @@ class SchellingGameEngine extends CellGameEngine {
                 y = (int) (Math.random() * gridSize);
             }
 
-            // grid.getGrid()[x][y].setPreviousState(cell.getPreviousState());
             grid.getGrid()[x][y].setCurrentState(cell.getCurrentState());
             cell.setCurrentState(0);
             coloredCells.remove(cell);

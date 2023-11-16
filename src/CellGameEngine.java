@@ -44,7 +44,6 @@ public abstract class CellGameEngine extends GameEngine {
     @Override
     public void restart(){
         restartFunc();
-        System.out.println("vkkkkkd");
         eventManager.restart();
 
         eventManager.addEvent(new FirstGenerationEvent((int) (eventManager.getCurrentDate() + 1)));

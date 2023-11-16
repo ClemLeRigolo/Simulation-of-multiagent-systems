@@ -1,4 +1,4 @@
-import java.util.HashSet; // import the HashMap class
+import java.util.PriorityQueue; // import the PriorityQueue class
 
 /**
  * Un Manager ...
@@ -6,8 +6,7 @@ import java.util.HashSet; // import the HashMap class
  */
 public class EventManager {
     private long currentDate;
-    //Peut-être plutôt utiliser une queue de priorité pour avoir un accès en O(1) à l'événement le plus proche
-    HashSet<Event> listEvent = new HashSet<>();
+    PriorityQueue<Event> listEvent = new PriorityQueue<>();
 
     public EventManager() {
         this.currentDate = 0;
@@ -19,7 +18,7 @@ public class EventManager {
 
     public void next() {
         this.currentDate++;
-        HashSet<Event> copyEvent = new HashSet<>(listEvent);
+        PriorityQueue<Event> copyEvent = new PriorityQueue<>(listEvent);
 
         for (Event event : copyEvent) {
             if (event.getDate() == this.currentDate) {

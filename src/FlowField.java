@@ -76,7 +76,6 @@ public class FlowField {
         int column = (int) constrain(lookup.getX() / field.getResolution(), 0, field.getCols() - 1);
         int row = (int) constrain(lookup.getY() / field.getResolution(), 0, field.getRows() - 1);
 
-        //System.out.println(column + " " + row);
         return field.getCase(column, row);
     }
 

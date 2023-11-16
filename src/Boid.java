@@ -80,7 +80,6 @@ public abstract class Boid implements GraphicalElement {
 
     void follow(FlowField flow) {
         Vector2 desired = flow.lookup(location);
-        //desired.mult(maxSpeed);
         Vector2 steer = Vector2.sub(desired, velocity);
         steer.limit(maxForce);
         applyForce(steer);
