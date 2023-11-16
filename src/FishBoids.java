@@ -75,6 +75,7 @@ class FishBoidsEngine extends BoidGameEngine{
 
         flowField = new FlowField(10, 800, 600);
         flowField.initField(FlowEnum.RANDOM);
+        flowField.initField(FlowEnum.RANDOM);
         eventManager.addEvent(new ChangeFieldEvent(100));
 
         //Lambda function in parameter of the event

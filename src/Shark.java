@@ -50,6 +50,7 @@ public class Shark extends Boid {
     public void eat(){
         if(targetedPrey != null){
             preys.removeBoid(targetedPrey);
+            targetedPrey.size = 0;
             hunger = 0;
         }
     }
