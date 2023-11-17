@@ -11,7 +11,7 @@ public class SchellingGame {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        SchellingGameEngine game = new SchellingGameEngine(gui, 100, 5000, 3, 4);
+        SchellingGameEngine game = new SchellingGameEngine(gui, 100, 5000, 2, 3);
     }
 }
 
