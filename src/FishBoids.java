@@ -27,8 +27,8 @@ class FishBoidsEngine extends BoidGameEngine{
 
     private EventManager eventManager;
 
-    private Fishes niceFishes;
-    private Fishes badFishes;
+    private BoidShoal niceFishes;
+    private BoidShoal badFishes;
     private Sardine[] sardines;
     private Shark shark;
     private int fishNumber;
@@ -44,8 +44,8 @@ class FishBoidsEngine extends BoidGameEngine{
         this.fishNumber = fishNumber;
         this.eventManager = new EventManager();
 
-        niceFishes = new Fishes();
-        badFishes = new Fishes();
+        niceFishes = new BoidShoal();
+        badFishes = new BoidShoal();
         sardines = new Sardine[fishNumber];
         shark = new Shark(75);
         //Init sardines
@@ -62,7 +62,7 @@ class FishBoidsEngine extends BoidGameEngine{
         }
 
         niceFishes.addBoids(sardines);
-        Fishes preyFishes = new Fishes();
+        BoidShoal preyFishes = new BoidShoal();
         preyFishes.addBoids(sardines);
         shark.setPreys(preyFishes);
 
@@ -106,7 +106,7 @@ class FishBoidsEngine extends BoidGameEngine{
     @Override
     public void restart() {
         flowField.initField(FlowEnum.RANDOM);
-        Fishes preyFishes = new Fishes();
+        BoidShoal preyFishes = new BoidShoal();
         preyFishes.addBoids(sardines);
         shark.setPreys(preyFishes);
         Consumer<Boid> restart = (Boid b) -> {
