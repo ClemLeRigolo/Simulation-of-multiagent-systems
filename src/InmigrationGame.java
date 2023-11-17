@@ -9,7 +9,7 @@ public class InmigrationGame {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        InmigrationGameEngine game = new InmigrationGameEngine(gui, 50, -1);
+        InmigrationGameEngine game = new InmigrationGameEngine(gui, 50, 4);
     }
 }
 
@@ -24,8 +24,8 @@ public class InmigrationGame {
  */
 class InmigrationGameEngine extends CellGameEngine {
 
-    public InmigrationGameEngine(GUISimulator gui, int gridSize, int cellNumber) {
-        super(gui, gridSize, cellNumber, 4);
+    public InmigrationGameEngine(GUISimulator gui, int gridSize, int stateNumber) {
+        super(gui, gridSize, -1, stateNumber);
         super.init();
     }
 
