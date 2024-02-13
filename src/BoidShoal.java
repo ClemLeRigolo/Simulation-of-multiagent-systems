@@ -6,7 +6,7 @@ import java.util.function.Consumer;
  * Implémente la créatio d'un banc de poissons et utilise les Boids pour simuler son comportement
  */
 
-public abstract class BoidShoal {
+public class BoidShoal {
 
     protected ArrayList<Boid> boids;
 

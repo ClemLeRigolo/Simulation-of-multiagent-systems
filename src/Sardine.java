@@ -33,7 +33,7 @@ public class Sardine extends Boid {
     @Override
     public void update() {
         //avoid the slayers if they are too close
-        if (predators != null) {
+        if (predators.getNbBoids() > 0) {
             Boid predator = predators.closestBoidFrom(this);
             Vector2 target = predator.location;
             if (Vector2.dist(location, target) < size * 10) {
@@ -64,7 +64,6 @@ public class Sardine extends Boid {
 
     @Override
     public void paint(Graphics2D g2) {
-        System.out.println("size : " + size);
         AffineTransform oldTransform = g2.getTransform();
 
         g2.translate(location.getX(), location.getY());

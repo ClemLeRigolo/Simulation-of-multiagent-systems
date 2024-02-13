@@ -9,7 +9,7 @@ public class GameOfLife {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.WHITE);
-        CellGameEngine game = new GameOfLifeEngine(gui, 30, 100);
+        CellGameEngine game = new GameOfLifeEngine(gui, 30, 25);
     }
 }
 
